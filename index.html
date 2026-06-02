@@ -1,444 +1,672 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CYBITY - Hack the Future. Secure the Present.</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <style>
-        :root {
-            --neon-cyan: #00FFFF;
-            --neon-purple: #D500FF;
-            --deep-black: #000000;
-            --dark-gray: #1A1A1A;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'JetBrains Mono', monospace;
-            background-color: var(--deep-black);
-            color: #FFFFFF;
-            overflow-x: hidden;
-            position: relative;
-        }
-        a {
-            color: var(--neon-cyan);
-            text-decoration: none;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
-            z-index: 100;
-        }
-        nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            padding: 10px 0;
-        }
-        nav li {
-            margin: 0 15px;
-        }
-        nav a {
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-            transition: color 0.3s;
-        }
-        nav a:hover {
-            color: var(--neon-purple);
-        }
-        /* Hero Section */
-        #landing {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        #landing::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
-            opacity: 0.1;
-            animation: gradient 15s ease infinite;
-        }
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .hero-tagline {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            animation: glitch 1s linear infinite;
-        }
-        @keyframes glitch {
-            2%, 64% { transform: translate(2px, 0) skew(3deg); }
-            4%, 60% { transform: translate(-2px, 0) skew(-3deg); }
-            62% { transform: translate(0, 0) skew(5deg); }
-        }
-        .hero-subtext {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-        }
-        .cta-btn {
-            padding: 10px 20px;
-            margin: 0 10px;
-            background: var(--neon-cyan);
-            color: var(--deep-black);
-            font-weight: 700;
-            border-radius: 5px;
-            transition: background 0.3s, transform 0.3s;
-        }
-        .cta-btn:hover {
-            background: var(--neon-purple);
-            transform: scale(1.05);
-        }
-        /* Background Animation */
-        .cyber-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0 0 L100 0 L100 100 L0 100 Z" stroke="%2300FFFF" stroke-width="0.5" fill="none"/><path d="M10 0 L10 100" stroke="%2300FFFF" stroke-width="0.5"/><path d="M20 0 L20 100" stroke="%2300FFFF" stroke-width="0.5"/><!-- Add more lines --></svg>') repeat;
-            opacity: 0.2;
-            animation: grid-move 20s linear infinite;
-        }
-        @keyframes grid-move {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-100px, -100px); }
-        }
-        /* Glassmorphism Cards */
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            transition: box-shadow 0.3s;
-        }
-        .glass-card:hover {
-            box-shadow: 0 0 20px var(--neon-cyan);
-        }
-        /* About Us */
-        #about {
-            padding: 100px 0;
-        }
-        .team-card {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .profile-card {
-            width: 200px;
-            margin: 10px;
-            text-align: center;
-            animation: glitch 2s infinite;
-        }
-        .profile-card img {
-            width: 100%;
-            border-radius: 50%;
-            filter: drop-shadow(0 0 10px var(--neon-purple));
-        }
-        /* Services */
-        #services {
-            padding: 100px 0;
-        }
-        .service-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        .service-card {
-            text-align: center;
-        }
-        .service-card i {
-            font-size: 2rem;
-            color: var(--neon-cyan);
-            margin-bottom: 10px;
-        }
-        .service-card:hover i {
-            color: var(--neon-purple);
-            animation: glow 1s infinite;
-        }
-        @keyframes glow {
-            0% { text-shadow: 0 0 5px var(--neon-purple); }
-            50% { text-shadow: 0 0 20px var(--neon-purple); }
-            100% { text-shadow: 0 0 5px var(--neon-purple); }
-        }
-        /* Case Studies */
-        #case-studies {
-            padding: 100px 0;
-        }
-        .case-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .case-card button {
-            background: var(--neon-cyan);
-            color: var(--deep-black);
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        /* Contact */
-        #contact {
-            padding: 100px 0;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        input, textarea {
-            margin: 10px 0;
-            padding: 10px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: #FFF;
-            border-radius: 5px;
-        }
-        button {
-            background: var(--neon-cyan);
-            color: var(--deep-black);
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .social-links {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .social-links a {
-            margin: 0 10px;
-            font-size: 1.5rem;
-        }
-        /* Floating Console */
-        .floating-console {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 300px;
-            height: 150px;
-            background: var(--deep-black);
-            border: 1px solid var(--neon-cyan);
-            padding: 10px;
-            font-size: 0.8rem;
-            overflow: hidden;
-            z-index: 50;
-        }
-        .console-line {
-            opacity: 0;
-        }
-        /* Sound Toggle */
-        .sound-toggle {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 50;
-        }
-        .sound-toggle button {
-            background: none;
-            border: none;
-            color: var(--neon-cyan);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: var(--dark-gray);
-        }
-        /* Terminal Transitions */
-        section {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s, transform 0.5s;
-        }
-        section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CYBITY | Offensive Security & Research</title>
+
+<style>
+
+:root{
+    --bg:#050505;
+    --card:#0b0b0b;
+    --border:#1f1f1f;
+    --text:#f5f5f5;
+    --muted:#8a8a8a;
+    --accent:#ff2a2a;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:Inter,system-ui,sans-serif;
+    overflow-x:hidden;
+}
+
+/* Animated Grid */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+
+    background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+
+    background-size:60px 60px;
+
+    pointer-events:none;
+    z-index:-2;
+}
+
+/* Cursor Glow */
+
+.cursor{
+    position:fixed;
+    width:350px;
+    height:350px;
+    border-radius:50%;
+
+    background:
+    radial-gradient(circle,
+    rgba(255,42,42,.10),
+    transparent 70%);
+
+    pointer-events:none;
+    transform:translate(-50%,-50%);
+    z-index:-1;
+}
+
+/* Navbar */
+
+header{
+    position:fixed;
+    width:100%;
+    top:0;
+    z-index:1000;
+
+    backdrop-filter:blur(10px);
+
+    background:
+    rgba(5,5,5,.7);
+
+    border-bottom:1px solid var(--border);
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:24px 8%;
+}
+
+.logo{
+    font-weight:800;
+    letter-spacing:4px;
+    text-decoration:none;
+    color:white;
+}
+
+.logo span{
+    color:var(--accent);
+}
+
+nav{
+    display:flex;
+    gap:30px;
+}
+
+nav a{
+    color:var(--muted);
+    text-decoration:none;
+    font-size:.9rem;
+}
+
+nav a:hover{
+    color:var(--accent);
+}
+
+/* Hero */
+
+.hero{
+    min-height:100vh;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+
+    padding:0 8%;
+}
+
+.kicker{
+    color:var(--accent);
+    letter-spacing:3px;
+    margin-bottom:20px;
+    font-size:.85rem;
+}
+
+.hero h1{
+    font-size:clamp(4rem,10vw,7rem);
+    line-height:.95;
+    max-width:900px;
+}
+
+.hero p{
+    margin-top:30px;
+    color:var(--muted);
+    max-width:700px;
+    font-size:1.1rem;
+}
+
+.buttons{
+    margin-top:40px;
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    padding:16px 28px;
+    text-decoration:none;
+    border:1px solid var(--border);
+    color:white;
+    transition:.3s;
+}
+
+.btn:hover{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:black;
+}
+
+.btn-secondary{
+    background:transparent;
+}
+
+/* Terminal */
+
+.terminal{
+    margin-top:50px;
+    border:1px solid var(--border);
+    padding:20px;
+    max-width:700px;
+    color:#8cff8c;
+    font-family:monospace;
+    background:#090909;
+}
+
+/* Sections */
+
+section{
+    padding:120px 8%;
+}
+
+.section-title{
+    font-size:.9rem;
+    color:var(--accent);
+    margin-bottom:20px;
+    letter-spacing:2px;
+}
+
+.section-heading{
+    font-size:3rem;
+    margin-bottom:50px;
+}
+
+/* Cards */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.card{
+    position:relative;
+    overflow:hidden;
+
+    background:var(--card);
+    border:1px solid var(--border);
+
+    padding:35px;
+
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+}
+
+.card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:
+    radial-gradient(circle at var(--x) var(--y),
+    rgba(255,42,42,.12),
+    transparent 40%);
+
+    opacity:0;
+    transition:.3s;
+}
+
+.card:hover::before{
+    opacity:1;
+}
+
+.card h3{
+    margin-bottom:15px;
+}
+
+.card p{
+    color:var(--muted);
+}
+
+/* Research */
+
+.research-item{
+    padding:25px 0;
+    border-bottom:1px solid var(--border);
+
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+}
+
+.research-item span{
+    color:var(--muted);
+}
+
+/* Reveal Animation */
+
+.reveal{
+    opacity:0;
+    transform:translateY(40px);
+    transition:all .8s ease;
+}
+
+.reveal.active{
+    opacity:1;
+    transform:none;
+}
+
+/* Footer */
+
+footer{
+    padding:60px 8%;
+    border-top:1px solid var(--border);
+}
+
+.footer-title{
+    font-size:2rem;
+    margin-bottom:15px;
+}
+
+.footer-email{
+    color:var(--accent);
+    text-decoration:none;
+}
+
+@media(max-width:768px){
+
+nav{
+    display:none;
+}
+
+.hero h1{
+    font-size:3.5rem;
+}
+
+.section-heading{
+    font-size:2rem;
+}
+
+}
+
+.social-card{
+    text-decoration:none;
+    color:inherit;
+    position:relative;
+}
+
+.social-card .arrow{
+    display:block;
+    margin-top:20px;
+    color:var(--accent);
+    font-size:1.2rem;
+    transition:.3s;
+}
+
+.social-card:hover .arrow{
+    transform:translateX(8px);
+}
+
+</style>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="#landing">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#case-studies">Case Studies</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
 
-    <section id="landing">
-        <div class="cyber-grid"></div>
-        <h1 class="hero-tagline">We are CYBITY — The Offensive Edge in Cybersecurity.</h1>
-        <p class="hero-subtext">From Red Teaming to Threat Intelligence, we secure what matters.</p>
-        <div>
-            <a href="#services" class="cta-btn">Explore Services</a>
-            <a href="#contact" class="cta-btn">Contact Us</a>
-        </div>
-    </section>
+<div class="cursor"></div>
 
-    <section id="about" class="container">
-        <h2>About Us</h2>
-        <p>CYBITY is a next-gen cybersecurity firm built by researchers, for defenders.</p>
-        <p>Our expertise includes red teaming, penetration testing, OSINT, and exploit research.</p>
-        <div class="team-card">
-            <!-- Placeholder for team members -->
-            <div class="profile-card">
-                <img src="https://avatars.githubusercontent.com/u/74185756?s=400&u=b1e6ab866c295898894a48c0768f1d5805f35482&v=4" alt="Team Member">
-                <p>Frey - Red Team Lead</p>
-            </div>
-            <div class="profile-card">
-                <img src="https://pbs.twimg.com/profile_images/1978720949848653824/ejY3a5U2_400x400.jpg" alt="Team Member">
-                <p>Prashant Tomar - Penetration Tester</p>
-            </div>
-            <div class="profile-card">
-                <img src="https://media.licdn.com/dms/image/v2/D5603AQE95UYv30r5ig/profile-displayphoto-shrink_800_800/B56ZSToZStHEAc-/0/1737643644385?e=1763596800&v=beta&t=oyebqALfYccuKcsEjTRy1GmFxnOY_WCrTREoVS6QLYU" alt="Team Member">
-                <p>Rakesh Rai - OSINT Expert</p>
-            </div>
-        </div>
-    </section>
+<header>
 
-    <section id="services" class="container">
-        <h2>Services</h2>
-        <div class="service-grid">
-            <div class="glass-card service-card">
-                <i class="fas fa-skull-crossbones"></i>
-                <h3>Red Teaming</h3>
-                <p>Simulate advanced threats to test your defenses.</p>
-            </div>
-            <div class="glass-card service-card">
-                <i class="fas fa-search"></i>
-                <h3>Penetration Testing</h3>
-                <p>Identify vulnerabilities before attackers do.</p>
-            </div>
-            <div class="glass-card service-card">
-                <i class="fas fa-shield-alt"></i>
-                <h3>Incident Response</h3>
-                <p>Rapid recovery from security breaches.</p>
-            </div>
-            <div class="glass-card service-card">
-                <i class="fas fa-eye"></i>
-                <h3>Threat Intelligence & Dark Web Monitoring</h3>
-                <p>Stay ahead with real-time threat insights.</p>
-            </div>
-        </div>
-    </section>
+<a href="#" class="logo">
+CYB<span>I</span>TY
+</a>
 
-    <section id="case-studies" class="container">
-        <h2>Case Studies / Projects</h2>
-        <div class="case-grid">
-            <div class="glass-card">
-                <h3>Project Alpha</h3>
-                <p>Successful red team engagement for a Fortune 500 company.</p>
-                <button>View Case Study</button>
-            </div>
-            <div class="glass-card">
-                <h3>CTF Simulation</h3>
-                <p>Custom CTF for training enterprise teams.</p>
-                <button>View Case Study</button>
-            </div>
-        </div>
-    </section>
+<nav>
+<a href="#services">Services</a>
+<a href="#research">Research</a>
+<a href="#contact">Contact</a>
+</nav>
 
-    <section id="contact" class="container">
-        <h2>Contact</h2>
-        <form>
-            <input type="text" placeholder="Name">
-            <input type="email" placeholder="Email">
-            <textarea placeholder="Message"></textarea>
-            <button type="submit">Send</button>
-        </form>
-        <p>Email: CyberFrey@pm.me</p>
-        <div class="social-links">
-            <a href="#"><i class="fab fa-github"></i></a>
-            <a href="https://www.linkedin.com/company/cybitysec"><i class="fab fa-linkedin"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-        </div>
-        <!--cybity office mam we don't have it lol -->
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.241264486589!2d-73.98626068458947!3d40.74844097932847!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1690000000000" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-    </section>
+</header>
 
-    <div class="floating-console">
-        <p class="console-line">System initializing...</p>
-        <p class="console-line">Loading modules: RedTeam v1.2</p>
-        <p class="console-line">Scanning threats...</p>
-        <!-- More lines -->
+<section class="hero">
+
+<div class="kicker">
+OFFENSIVE SECURITY & RESEARCH
+</div>
+
+<h1 id="typing"></h1>
+
+<p>
+Red Teaming, AI Security Assessments,
+Web Application Testing, Vulnerability Research,
+and Adversary Simulation for modern organizations.
+</p>
+
+<div class="buttons">
+
+<a href="#contact" class="btn">
+Request Assessment
+</a>
+
+<a href="#research" class="btn btn-secondary">
+Research
+</a>
+
+</div>
+
+<div class="terminal">
+&gt; <span id="terminal-text"></span>
+</div>
+
+</section>
+
+<section id="services" class="reveal">
+
+<div class="section-title">
+CORE CAPABILITIES
+</div>
+
+<h2 class="section-heading">
+What We Do
+</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>Red Teaming</h3>
+<p>
+Adversary emulation engagements designed
+to evaluate detection and response capabilities.
+</p>
+</div>
+
+<div class="card">
+<h3>Web Application Security</h3>
+<p>
+Manual penetration testing focused on
+high-impact vulnerabilities and business logic flaws.
+</p>
+</div>
+
+<div class="card">
+<h3>AI Security</h3>
+<p>
+Prompt injection, indirect prompt attacks,
+data leakage, model abuse, and OWASP LLM testing.
+</p>
+</div>
+
+<div class="card">
+<h3>Vulnerability Research</h3>
+<p>
+Deep technical analysis of modern attack surfaces,
+exploitation paths, and emerging threats.
+</p>
+</div>
+
+</div>
+
+</section>
+
+<section id="research" class="reveal">
+
+<div class="section-title">
+RESEARCH
+</div>
+
+<h2 class="section-heading">
+Latest Focus Areas
+</h2>
+
+<div class="research-item">
+<div>Authentication Bypass Research</div>
+<span>Identity Security</span>
+</div>
+
+<div class="research-item">
+<div>AI Prompt Injection Attacks</div>
+<span>LLM Security</span>
+</div>
+
+<div class="research-item">
+<div>Web Cache Poisoning</div>
+<span>Application Security</span>
+</div>
+
+<div class="research-item">
+<div>Adversary Tradecraft</div>
+<span>Red Teaming</span>
+</div>
+
+</section>
+
+
+<section id="connect" class="reveal">
+
+    <div class="section-title">
+        CONNECT
     </div>
 
-    <div class="sound-toggle">
-        <button id="sound-btn"><i class="fas fa-volume-up"></i></button>
+    <h2 class="section-heading">
+        Join The Community
+    </h2>
+
+    <div class="grid">
+
+        <a class="card social-card"
+           href="https://discord.gg/WyPuBvPD3Z"
+           target="_blank">
+
+            <h3>Discord</h3>
+
+            <p>
+                Join the Cybity community for discussions,
+                research, offensive security, and collaboration.
+            </p>
+
+            <span class="arrow">→</span>
+
+        </a>
+
+        <a class="card social-card"
+           href="https://x.com/cybity_"
+           target="_blank">
+
+            <h3>X / Twitter</h3>
+
+            <p>
+                Follow research updates, vulnerability analysis,
+                and offensive security insights.
+            </p>
+
+            <span class="arrow">→</span>
+
+        </a>
+
+        <a class="card social-card"
+           href="https://github.com/cybity"
+           target="_blank">
+
+            <h3>GitHub</h3>
+
+            <p>
+                Open-source projects, tooling,
+                research code, and security resources.
+            </p>
+
+            <span class="arrow">→</span>
+
+        </a>
+
     </div>
 
-    <footer>
-        <p>© 2025 CYBITY — All Rights Reserved.</p>
-    </footer>
+</section>
 
-    <script>
-        // GSAP Animations
-        gsap.from(".hero-tagline", { duration: 1, y: 50, opacity: 0, ease: "power3.out" });
-        gsap.from(".hero-subtext", { duration: 1, y: 50, opacity: 0, delay: 0.5, ease: "power3.out" });
+<footer id="contact">
 
-        // Console Animation
-        const consoleLines = document.querySelectorAll('.console-line');
-        gsap.timeline({ repeat: -1 })
-            .to(consoleLines, { opacity: 1, stagger: 0.5, duration: 0.5 })
-            .to(consoleLines, { opacity: 0, stagger: 0.5, duration: 0.5, delay: 2 });
+    <div class="footer-title">
+        Ready To Test Your Defenses?
+    </div>
 
-        // Sound Toggle (Placeholder - Add actual audio)
-        const soundBtn = document.getElementById('sound-btn');
-        let soundOn = false;
-        soundBtn.addEventListener('click', () => {
-            soundOn = !soundOn;
-            soundBtn.innerHTML = soundOn ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
-            // Toggle audio here
-        });
+    <p>
+        Red Teaming • AI Security • Application Security • Research
+    </p>
 
-        // Section Visibility on Scroll
-        const sections = document.querySelectorAll('section');
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        });
-        sections.forEach(section => observer.observe(section));
-    </script>
+    <br>
+
+    <a class="footer-email"
+       href="mailto:hello@cybity.com">
+       
+    </a>
+
+    <br><br>
+
+    <small>
+        © 2026 CYBITY.
+        Built for offensive security.
+    </small>
+
+</footer>
+
+<script>
+
+/* Typing */
+
+const text =
+"Offensive Security For Modern Organizations.";
+
+let i = 0;
+
+function type(){
+
+if(i < text.length){
+
+document.getElementById("typing")
+.innerHTML += text.charAt(i);
+
+i++;
+
+setTimeout(type,40);
+
+}
+
+}
+
+type();
+
+/* Terminal */
+
+const lines = [
+
+"Running adversary simulation...",
+"Analyzing attack surface...",
+"Testing authentication controls...",
+"Enumerating exposed assets...",
+"Validating AI security controls..."
+
+];
+
+let current = 0;
+
+setInterval(() => {
+
+document.getElementById("terminal-text")
+.textContent = lines[current];
+
+current =
+(current + 1) % lines.length;
+
+},2500);
+
+/* Cursor Glow */
+
+const cursor =
+document.querySelector(".cursor");
+
+document.addEventListener("mousemove", e => {
+
+cursor.style.left =
+e.clientX + "px";
+
+cursor.style.top =
+e.clientY + "px";
+
+});
+
+/* Card Glow */
+
+document
+.querySelectorAll(".card")
+.forEach(card => {
+
+card.addEventListener("mousemove", e => {
+
+const rect =
+card.getBoundingClientRect();
+
+card.style.setProperty(
+'--x',
+`${e.clientX - rect.left}px`
+);
+
+card.style.setProperty(
+'--y',
+`${e.clientY - rect.top}px`
+);
+
+});
+
+});
+
+/* Scroll Reveal */
+
+const observer =
+new IntersectionObserver(entries => {
+
+entries.forEach(entry => {
+
+if(entry.isIntersecting){
+
+entry.target.classList.add("active");
+
+}
+
+});
+
+},{
+threshold:.1
+});
+
+document
+.querySelectorAll(".reveal")
+.forEach(el => observer.observe(el));
+
+</script>
+
 </body>
 </html>
